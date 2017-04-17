@@ -1,0 +1,37 @@
+{
+  "name": "module-linker",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "pouchdb-adapter-idb": "^6.1.2",
+    "pouchdb-core": "^6.1.2",
+    "pouchdb-ensure": "^1.0.0",
+    "pouchdb-mapreduce": "^6.1.2",
+    "xtend": "^4.0.1"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "bubleify",
+        {
+          "transforms": {
+            "dangerousTaggedTemplateString": true
+          },
+          "objectAssign": "xtend",
+          "sourceMap": true
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "browserify": "11.0.1",
+    "browserify-incremental": "^3.0.1",
+    "bubleify": "^0.7.0"
+  },
+  "scripts": {
+    "watch": "ls *.js | entr browserifyinc -vd content-script.js -o dist/full.js",
+    "build": "mkdir -p dist && browserifyinc content-script.js --outfile dist/full.js && cp background.js dist/",
+    "pack": "rm -fr tmp/ && npm run build && mkdir -p tmp && cp -r dist vendor tmp/ && cp icon128.png icon64.png icon48.png icon16.png manifest.json options.html options.js links.css tmp/ && cd tmp/ && zip -r archive * && mv archive.zip ../ && cd .."
+  }
+}

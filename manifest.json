@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Autocompleter",
+  "description": "Autocomplete every textarea.",
+  "version": "0.0.1",
+  "author": "Giovanni T. Parra",
+  "content_scripts": [{
+    "matches": [
+      "*://*/*"
+    ],
+    "all_frames": true,
+    "js": ["vendor/jquery.js", "vendor/jquery.textcomplete.js", "dist/full.js"],
+    "css": ["vendor/bootstrap.min.css"]
+  }],
+  "background": {
+    "scripts": ["dist/background.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "*://*/*",
+    "activeTab",
+    "webNavigation",
+    "storage"
+  ]
+}
