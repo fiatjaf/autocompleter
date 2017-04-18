@@ -10,7 +10,7 @@
     ],
     "all_frames": true,
     "js": ["vendor/jquery.js", "vendor/jquery.textcomplete.js", "dist/full.js"],
-    "css": ["vendor/bootstrap.min.css"]
+    "css": ["style.css"]
   }],
   "background": {
     "scripts": ["dist/background.js"],

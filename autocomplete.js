@@ -44,6 +44,7 @@ module.exports = function (textarea) {
           values = fuzzy.filter(match[2].toLowerCase(), values)
             .sort((a, b) => a.score - b.score)
             .map(item => item.string)
+            .filter(word => word !== match[2])
         }
 
         callback(values)
