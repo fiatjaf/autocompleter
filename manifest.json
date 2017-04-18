@@ -17,7 +17,6 @@
     "persistent": false
   },
   "permissions": [
-    "*://*/*",
     "activeTab",
     "webNavigation",
     "storage"

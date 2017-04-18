@@ -1,32 +1,40 @@
 const $ = window.jQuery
+const fuzzy = require('fuzzy')
 
 const db = require('./db')
 
 module.exports = function (textarea) {
-  $(textarea).textcomplete([{ // tech companies
-    match: /\b(\w{1,})$/,
-    search: function (term, callback, match) {
-      console.log('match', match)
-      console.log('term', term)
+  $(textarea).textcomplete([{
+    match: /(\w+) +(\w*)$/,
+    search: function (_, callback, match) {
+      db.query('main/next-word', {key: match[1].toLowerCase()})
+        .then(res => res.rows .map(r => r.value))
+        .then(values => {
+          console.log('fetched', values)
 
-      db.query('main/next-word')
-        .then(res => res.rows)
-        .then(rows => {
-          console.log('fetched rows:', rows)
-          callback(rows.map(r => r.value))
+          if (match[2]) {
+            values = fuzzy.filter(match[2].toLowerCase(), values)
+              .sort((a, b) => a.score - b.score)
+              .map(item => item.string)
+          }
+
+          callback(values)
         })
         .catch(e => console.error('failed to fetch rows:', e))
     },
-    index: 1,
-    replace: function (word) {
-      return word + ' '
+    index: 2,
+    replace: word => function (m, prev, next) {
+      return prev + ' ' + word + ' '
     }
   }], {
     onKeydown: function (e, commands) {
-      if (e.ctrlKey && e.keyCode === 74) {
-        // Ctrl-J
+      if (e.ctrlKey && e.keyCode === 74 /* Ctrl-J */) {
         return commands.KEY_ENTER
       }
     }
+  })
+
+  $(textarea).on('textComplete:select', () => {
+    $(textarea).textcomplete('trigger')
   })
 }

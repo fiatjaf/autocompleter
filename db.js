@@ -5,10 +5,12 @@ const PouchDB = require('pouchdb-core')
   .plugin(require('pouchdb-adapter-idb'))
   .plugin(require('pouchdb-ensure'))
 
-PouchDB.debug.enable('*')
+PouchDB.debug.disable('*')
 
 const db = new PouchDB('autocompleter')
 module.exports = db
+
+db.viewCleanup()
 
 db.ensure({
   _id: '_design/main',
@@ -19,7 +21,11 @@ db.ensure({
         function tokenize (string) {
           if (!string) return []
           return string.match(/"(?:\\"|[^"])+"|[^\s]+/g)
-            .map(function (word) { return word.replace(/^\"|\"$/g, '') })
+            .map(function (word) {
+              return word
+                .replace(/^\"|\"$/g, '') // remove quotes
+                .replace(/\W*|\W*$/, '') // remove everything that is not a letter or number
+            })
         }
 
         let sentences = doc.t.split(/\.|!|\?/)
