@@ -4,6 +4,12 @@
   "description": "Autocomplete every textarea.",
   "version": "0.0.1",
   "author": "Giovanni T. Parra",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "64": "icon.png",
+    "128": "icon.png"
+  },
   "content_scripts": [{
     "matches": [
       "*://*/*"
@@ -15,6 +21,11 @@
   "background": {
     "scripts": ["dist/background.js"],
     "persistent": false
+  },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true,
+    "open_in_tab": true
   },
   "permissions": [
     "activeTab",

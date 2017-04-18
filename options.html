@@ -1,0 +1,68 @@
+<!doctype html>
+
+<title>Autocompleter Options</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+p, label, td {
+  font-size: 130%;
+}
+body {
+  margin: auto;
+  width: 800px;
+  max-width: 97%;
+}
+header {
+  text-align: center;
+}
+input {
+  padding: 5px;
+}
+td {
+  padding: 5px 10px;
+  word-wrap: break-word;
+  max-width: 274px;
+}
+footer {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+@media (max-height: 600px) {
+  footer { display: none }
+}
+</style>
+
+<header><img width=128 src=/icon.png><h3></h3></header>
+
+<label>keep only the content of the last <input style="width:58px" id=limit> textareas.</label>
+
+<p>
+  currently, there <span id=areis>are</span> <span id=nstored>_</span> stored.
+  <button id=show>view all</button>
+  <button id=erase>erase all</button>
+  <table id=all style="display:none">
+    <thead>
+      <tr>
+        <th>date</th>
+        <th>where</th>
+        <th>sentences</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</p>
+
+<p id=message></p>
+
+<br>
+<br>
+<footer><a href=https://github.com/fiatjaf/autocompleter>https://github.com/fiatjaf/autocompleter</a></footer>
+
+<script src=db.js></script>
+<script src=options.js></script>

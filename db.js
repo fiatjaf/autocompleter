@@ -1,42 +1,39 @@
-/* global emit */
+/* global chrome */
 
-const PouchDB = require('pouchdb-core')
-  .plugin(require('pouchdb-mapreduce'))
-  .plugin(require('pouchdb-adapter-idb'))
-  .plugin(require('pouchdb-ensure'))
-  .plugin(require('pouchdb-quick-search'))
+var proxy = {
+  get: wrap('get'),
+  put: wrap('put'),
+  post: wrap('post'),
+  ensure: wrap('ensure'),
+  remove: wrap('remove'),
+  query: wrap('query'),
+  allDocs: wrap('allDocs'),
+  bulkDocs: wrap('bulkDocs')
+}
 
-const db = new PouchDB('autocompleter')
-module.exports = db
-
-db.viewCleanup()
-db.compact()
-
-db.ensure({
-  _id: '_design/main',
-  views: {
-    'next-word': {
-      map: function (doc) {
-        // copied from https://github.com/timjrobinson/split-string-words
-        function tokenize (string) {
-          if (!string) return []
-          return string.match(/"(?:\\"|[^"])+"|[^\s]+/g)
-            .map(function (word) {
-              return word
-                .replace(/^\"|\"$/g, '') // remove quotes
-                .replace(/\W*|\W*$/, '') // remove everything that is not a letter or number
-            })
+function wrap (method) {
+  return function () {
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({
+        method: method,
+        args: JSON.stringify(Array.prototype.slice.call(arguments))
+      }, function (response) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError)
+          return
         }
-
-        doc.s.forEach(s => {
-          var tokens = tokenize(s)
-          for (var i = 0; i < (tokens.length - 1); i++) {
-            var word = tokens[i]
-            var next = tokens[i + 1]
-            emit(word, next)
-          }
-        })
-      }.toString()
-    }
+        if (response.error) {
+          reject(response.error)
+          return
+        }
+        resolve(response)
+      })
+    })
   }
-})
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = proxy
+} else {
+  window.db = proxy
+}
