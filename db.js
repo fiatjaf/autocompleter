@@ -7,6 +7,7 @@ var proxy = {
   ensure: wrap('ensure'),
   remove: wrap('remove'),
   query: wrap('query'),
+  search: wrap('search'),
   allDocs: wrap('allDocs'),
   bulkDocs: wrap('bulkDocs')
 }

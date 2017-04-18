@@ -20,7 +20,7 @@ function saveInput (textarea, index) {
     ).slice(0, 5),
     h: location.href,
     d: date,
-    s: textarea.value.split(/\.|!|\?/) // sentences
+    s: textarea.value.split(/\.|!|\?|;|:/) // sentences
          .map(x => x.trim())
          .filter(x => x)
   })

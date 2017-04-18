@@ -8,7 +8,6 @@ module.exports = function (textarea) {
     // full sentences
     match: /.*((?:\w+ +|^)(?:\w+ +|^)\w+) $/, /* from the first word or from the last three. */
     search: function (_, callback, match) {
-      console.log('searching full sentences: ', match[1])
       db.search({
         fields: ['s'],
         query: match[1],
@@ -49,6 +48,7 @@ module.exports = function (textarea) {
 
         callback(values)
       })
+      .catch(e => console.error('failed to fetch rows:', e))
     },
     replace: word => function (m, prev, next) {
       return prev + ' ' + word + ' '

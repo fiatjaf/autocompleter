@@ -86,8 +86,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   let args = JSON.parse(request.args)
 
   db[method].apply(db, args)
-  .then(res => sendResponse(res))
-  .catch(err => sendResponse({error: err}))
+  .then(
+    res => sendResponse(res),
+    err => sendResponse({error: err})
+  )
 
   return true
 })
