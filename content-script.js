@@ -6,9 +6,9 @@ const autocomplete = require('./autocomplete')
 const grabsentences = require('./grab-sentences')
 
 function main () {
-  // this global check will prevent us from running process() multiple times.
+  // this global check will prevent us from running main() multiple times.
   if ($('#autocompleter-done').length) return
-  $('#js-repo-pjax-container').append($('<span id="autocompleter-done">'))
+  $('body').append($('<span id="autocompleter-done">'))
 
   $('body').on('blur', 'textarea', e => grabsentences(e.target))
   $('body').on('submit', 'form', e =>
@@ -16,16 +16,25 @@ function main () {
       grabsentences(textarea)
     )
   )
-  $('body').on('input,focus', 'textarea', e => autocomplete(e.target))
-  $('body').on('keyup', 'textarea', e => {
-    switch (e.keyCode) {
-      case 37:
-      case 38:
-      case 39:
-      case 40:
-        autocomplete(e.target)
-    }
+
+  // init autocomplete context in current textareas
+  $('textarea').each((_, textarea) => {
+    autocomplete(textarea)
   })
+
+  // and in all new textareas that may appear
+  let observer = new window.MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      for (let i = 0; i < mutation.addedNodes.length; i++) {
+        let node = mutation.addedNodes[i]
+        if (node.tagName === 'TEXTAREA') {
+          autocomplete(node)
+        }
+      }
+    })
+  })
+
+  observer.observe(document.body, {childList: true})
 }
 
 main()

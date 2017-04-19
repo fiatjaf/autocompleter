@@ -14,10 +14,14 @@ const PouchDB = require('pouchdb-core')
   .plugin(require('pouchdb-quick-search'))
 
 const db = new PouchDB('autocompleter')
-module.exports = db
+window.db = db
 
 db.viewCleanup()
+  .then(() => console.log('views cleaned up.'))
+  .catch(e => console.error('failed to cleanup views', e))
 db.compact()
+  .then(() => console.log('compacted.'))
+  .catch(e => console.error('failed to compact.', e))
 
 db.ensure({
   _id: '_design/main',
@@ -41,12 +45,17 @@ db.ensure({
             var word = tokens[i].toLowerCase()
             var next = tokens[i + 1].toLowerCase()
 
+            if (word.length > 20 || next.length > 20 ||
+                next.length < 2) continue
+
             // one word and the next
             emit(word, next)
 
             // two words and the next
             if (i > 0) {
               let prev = tokens[i - 1].toLowerCase()
+              if (prev.length > 20) continue
+
               emit([prev, word], next)
             }
           }

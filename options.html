@@ -24,19 +24,11 @@ td {
   word-wrap: break-word;
   max-width: 274px;
 }
-footer {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-@media (max-height: 600px) {
-  footer { display: none }
-}
 </style>
 
-<header><img width=128 src=/icon.png><h3></h3></header>
+<header>
+  <a href=https://github.com/fiatjaf/autocompleter target=_blank><img width=128 src=/icon.png></a>
+</header>
 
 <label>keep only the content of the last <input style="width:58px" id=limit> textareas.</label>
 
@@ -59,10 +51,6 @@ footer {
 </p>
 
 <p id=message></p>
-
-<br>
-<br>
-<footer><a href=https://github.com/fiatjaf/autocompleter>https://github.com/fiatjaf/autocompleter</a></footer>
 
 <script src=db.js></script>
 <script src=options.js></script>

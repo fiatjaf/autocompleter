@@ -10,7 +10,7 @@ module.exports = function grabsentences (textarea) {
 
   db.ensure({
     _id: md5(
-      location.host + location.pathname +
+      location.host + location.pathname + '?' + location.search +
       '#' + textarea.id + '.' + textarea.className.split('.').join('.')
     ).slice(0, 5),
     h: location.href,
