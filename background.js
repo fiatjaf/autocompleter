@@ -38,9 +38,17 @@ db.ensure({
         doc.s.forEach(s => {
           var tokens = tokenize(s)
           for (var i = 0; i < (tokens.length - 1); i++) {
-            var word = tokens[i]
-            var next = tokens[i + 1]
+            var word = tokens[i].toLowerCase()
+            var next = tokens[i + 1].toLowerCase()
+
+            // one word and the next
             emit(word, next)
+
+            // two words and the next
+            if (i > 0) {
+              let prev = tokens[i - 1].toLowerCase()
+              emit([prev, word], next)
+            }
           }
         })
       }.toString()

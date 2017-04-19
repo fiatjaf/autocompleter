@@ -1,14 +1,8 @@
-const $ = window.jQuery
 const md5 = require('pouchdb-md5').stringMd5
 
 const db = require('./db')
 
-module.exports = function (textarea, index) {
-  $(textarea).on('blur', () => saveInput(textarea, index))
-  $(textarea).closest('form').on('submit', () => saveInput(textarea, index))
-}
-
-function saveInput (textarea, index) {
+module.exports = function grabsentences (textarea) {
   if (textarea.value.length < 10) return
 
   let today = new Date()
@@ -16,7 +10,8 @@ function saveInput (textarea, index) {
 
   db.ensure({
     _id: md5(
-      location.host + location.pathname + '#' + (textarea.id || '~' + index)
+      location.host + location.pathname +
+      '#' + textarea.id + '.' + textarea.className.split('.').join('.')
     ).slice(0, 5),
     h: location.href,
     d: date,

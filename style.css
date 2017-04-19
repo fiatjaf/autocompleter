@@ -1,34 +1,32 @@
-.textcomplete-dropdown {
+.autocompleter {
   border: 1px solid #ddd;
   background-color: white;
   width: auto;
+  z-index: 55;
 }
 
-.textcomplete-dropdown li {
+.autocompleter li {
   border-top: 1px solid #ddd;
-  padding: 2px 5px;
+  padding: 3px 7px;
 }
 
-.textcomplete-dropdown a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.textcomplete-dropdown li:first-child {
+.autocompleter li:first-child {
   border-top: none;
 }
 
-.textcomplete-dropdown li:hover,
-.textcomplete-dropdown .active {
+.autocompleter li.active {
   background-color: rgb(110, 183, 219);
 }
 
-.textcomplete-dropdown {
+.autocompleter a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+}
+
+.autocompleter {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.textcomplete-dropdown a:hover {
-  cursor: pointer;
 }

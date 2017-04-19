@@ -15,7 +15,7 @@
       "*://*/*"
     ],
     "all_frames": true,
-    "js": ["vendor/jquery.js", "vendor/jquery.textcomplete.js", "dist/full.js"],
+    "js": ["vendor/jquery.js", "vendor/jquery.caret.js", "dist/full.js"],
     "css": ["style.css"]
   }],
   "background": {
